@@ -5,7 +5,11 @@ The pubmed2.py does not take any commandline arguments, as i developed it on And
 For Raspberry Pi 5 you can do the following:
 
 python -m venv my_project
+
 source my_project/bin/activate
+
 pip install biopython
+
 pip install pymed
+
 pip install latexenc
