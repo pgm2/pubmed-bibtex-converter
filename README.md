@@ -12,4 +12,4 @@ pip install biopython
 
 pip install pymed
 
-pip install latexenc
+pip install pylatexenc
