@@ -28,7 +28,7 @@ def test():
     if (len(sys.argv) == 2):
     	input_file = os.getcwd()+'/'+sys.argv[1]
     	output_file = open(os.getcwd()+'/bibtex.txt', "w")
-    if (len(sys.argv) == 1):
+    elif (len(sys.argv) == 1):
     	input_file = '/storage/emulated/0/Download/python/pmids'
     	output_file = open('/storage/emulated/0/Download/python/bibtex.txt',"w")
     else:
