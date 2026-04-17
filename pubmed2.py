@@ -21,7 +21,7 @@ from pylatexenc.latexencode import UnicodeToLatexEncoder, UnicodeToLatexConversi
 import re
 import os
 import sys
-
+max_authors = 1
 Entrez.email = "your_email2@example.com"  # Required by NCBI
 
 def test():
@@ -32,7 +32,7 @@ def test():
     	input_file = '/storage/emulated/0/Download/python/pmids'
     	output_file = open('/storage/emulated/0/Download/python/bibtex.txt',"w")
     else:
-    	sys.exit("Give only a single argument as inputfilename.")
+    	sys.exit("Give only a single argument as inputfilename."+str(sys.argv))
     pmids = []
     with open(input_file, 'r') as file:
         for line in file:
@@ -57,13 +57,20 @@ def test():
     	   print(f"Title: {title}")
     	   raw_id = str(article.pubmed_id)
     	   clean_pmid = raw_id.split()[0]  # Takes first entry if multiple exist
-    	   
-    	   first_author = article.authors[0]  # Get first author dict
-    	   first_author_name = f"{first_author.get('firstname', '')} {first_author.get('lastname', '')}".strip()
-    	   #translate to latex syntax
-    	   first_author_name = unicode_to_latex(first_author_name)
-    	   print(f"First Author: {first_author_name}")
-    	   
+    	   print(f"authors:{len(article.authors)}")
+    	   author_names=""
+    	   loop_length = min(max_authors, len(article.authors))
+    	   for i in range(loop_length):
+    	   	author = article.authors[i]  # Get author from dict
+    	   	author_name = f"{author.get('firstname', '')} {author.get('lastname', '')}".strip()
+    	   	#translate to latex syntax
+    	   	author_names += unicode_to_latex(author_name)
+    	   	if (i < loop_length-1):
+    	   		author_names +=" and "
+    	   	print(f"Author: {author_name}")
+    	   if (max_authors < len(article.authors)):
+    	   	author_names +=" and others"
+    	   	
     	   url = get_pmc_from_pubmed_xml(clean_pmid)
     	   print(f"URL: {url}")
     	   # Extract year 
@@ -77,7 +84,7 @@ def test():
     	   abbrev = get_journal_abbreviation(clean_pmid)  # Replace with your PMID
     	   print(f"ISO Abbreviation: {abbrev}")  # e.g., "Nat. Biotechnol."
     	   #make a bibtex entry
-    	   bibtex_entry(output_file,first_author_name, url, title, abbrev, year)
+    	   bibtex_entry(output_file, author_names, url, title, abbrev, year)
     	   print("")
     	else:
     		print(f"\nError: PMID {pmid} not found.\n")
@@ -166,7 +173,7 @@ def special_convert(string):
 #}
 def bibtex_entry(text_file, author, url, title, journal, year):
 		print(f"@Article {{key,",file=text_file)
-		print(f"Author = \"{author} and others\",",file=text_file)
+		print(f"Author = \"{author}\",",file=text_file)
 		print(f"Title = \"\\href{{{url}}}{{{title}}}\",",file=text_file)
 		print(f"Journal = \"{journal}.\",",file=text_file)
 		print(f"Year = {year},\n}}\n",file=text_file)
