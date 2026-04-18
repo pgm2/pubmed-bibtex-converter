@@ -2,7 +2,7 @@ Install pymed, biopython, and pylatexenc with pip install pymed, pip install bio
 Then change input and output file paths to match your files in pubmed2.py. You can use pwd in Linux to check current path.
 The pubmed2.py takes a single commandline argument as inputfile, if none is given it uses default names and paths (for Android).
 
-You can specify max_authors in python script, which is the max amount of authors in each reference. If the paper has more authors than this, "and others" string is inserted in the end. If the paper has a smaller amount of authors than max_authors, then only the authors are printed with no "and others". The script also inserts "and" between each author.
+You can also specify max_authors in python script, which is the max amount of authors used in each reference. If the paper has more authors than this, "and others" string is inserted in the end. If the paper has a smaller amount of authors than max_authors, then only the authors are printed with no "and others". The script also inserts "and" between each author.
 
 For Raspberry Pi 5 you can do the following:
 
